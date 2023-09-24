@@ -1,0 +1,6 @@
+*.lock.hcl
+.terraform
+*.tfstate*
+
+lambda.zip
+lambda_result.txt

@@ -1,0 +1,397 @@
+/* ICONS: https://icons.getbootstrap.com/ */
+
+.opportunity-title a {
+  text-decoration: none;
+}
+.pagination-container {
+  margin-top: 30px;
+}
+
+.bi-check-circle-fill {
+  font-size: 24px;
+  color: green;
+  float: right;
+}
+
+#aws-reinvent #opportunity-facets {
+  display: none;
+}
+@media (min-width: 992px) {
+  #aws-reinvent #opportunity-facets {
+      display: block;
+  }
+}
+
+/* The side navigation menu */
+.sidenav {
+    display: none; /* only show on large screens */
+    height: 100%; /* 100% Full-height */
+    width: 300px; /* 0 width - change this with JavaScript */
+    padding: 15px;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: #eee;
+    overflow-x: hidden; /* Disable horizontal scroll */
+    /*padding-top: 60px;*/ /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+#main-items {
+  margin-left: 0px;
+  padding: 0 15px;
+}
+
+.aws-role { background-color: #0d6efd; }
+.aws-topic { background-color: #198754; }
+.aws-areas-of-interest { background-color: #dc3545; }
+.aws-industry { background-color: #6c757d; }
+.aws-level { background-color: #e4ab00; }
+.aws-services { background-color: #7f1a8c; }
+
+.aws-session-type { background-color: #6a4bca; }
+
+
+button {
+  margin-top: 15px;
+}
+
+#aws-reinvent {
+  margin: 15px 0;
+}
+#aws-reinvent input[type=search]::-webkit-search-cancel-button {
+  -webkit-appearance: searchfield-cancel-button;
+}
+#aws-reinvent input[type=search] {
+  -webkit-appearance: none;
+}
+#aws-reinvent h1 {
+  margin-bottom: 40px;
+  font-size: 32px;
+}
+@media (min-width: 576px) {
+  #aws-reinvent h1 {
+    font-size: 36px;
+  }
+}
+#aws-reinvent .btn {
+  margin-left: 0;
+}
+#aws-reinvent #loading-opportunities {
+  text-align: center;
+}
+#aws-reinvent #loading-opportunities .lds-grid {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+#aws-reinvent #loading-opportunities .lds-grid div {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #000;
+  animation: lds-grid 1.2s linear infinite;
+}
+#aws-reinvent #loading-opportunities .lds-grid div:nth-child(1) {
+  top: 8px;
+  left: 8px;
+  animation-delay: 0s;
+}
+#aws-reinvent #loading-opportunities .lds-grid div:nth-child(2) {
+  top: 8px;
+  left: 32px;
+  animation-delay: -0.4s;
+}
+#aws-reinvent #loading-opportunities .lds-grid div:nth-child(3) {
+  top: 8px;
+  left: 56px;
+  animation-delay: -0.8s;
+}
+#aws-reinvent #loading-opportunities .lds-grid div:nth-child(4) {
+  top: 32px;
+  left: 8px;
+  animation-delay: -0.4s;
+}
+#aws-reinvent #loading-opportunities .lds-grid div:nth-child(5) {
+  top: 32px;
+  left: 32px;
+  animation-delay: -0.8s;
+}
+#aws-reinvent #loading-opportunities .lds-grid div:nth-child(6) {
+  top: 32px;
+  left: 56px;
+  animation-delay: -1.2s;
+}
+#aws-reinvent #loading-opportunities .lds-grid div:nth-child(7) {
+  top: 56px;
+  left: 8px;
+  animation-delay: -0.8s;
+}
+#aws-reinvent #loading-opportunities .lds-grid div:nth-child(8) {
+  top: 56px;
+  left: 32px;
+  animation-delay: -1.2s;
+}
+#aws-reinvent #loading-opportunities .lds-grid div:nth-child(9) {
+  top: 56px;
+  left: 56px;
+  animation-delay: -1.6s;
+}
+@keyframes lds-grid {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+#aws-reinvent #loading-opportunities.hidden {
+  display: none;
+}
+#aws-reinvent #main-opportunities {
+  visibility: hidden;
+}
+#aws-reinvent #main-opportunities.showing {
+  visibility: visible;
+}
+#aws-reinvent #opportunity-facets {
+  visibility: hidden;
+}
+@media (min-width: 992px) {
+  #aws-reinvent #opportunity-facets {
+    visibility: visible;
+  }
+  #aws-reinvent #main-items {
+    margin-left: 300px;
+  }
+  .sidenav {
+    display: block;
+  }
+}
+#aws-reinvent #opportunity-facets-mobile-button {
+  display: block;
+  margin-bottom: 20px;
+}
+@media (min-width: 992px) {
+  #aws-reinvent #opportunity-facets-mobile-button {
+    display: none;
+  }
+}
+#aws-reinvent .modal button.close span {
+  color: #333;
+}
+#aws-reinvent .facet-box {
+  margin: 20px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
+#aws-reinvent .facet-box h5 {
+  color: #000;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+#aws-reinvent .facet-box h5 .facet-title {
+  flex: 1;
+}
+#aws-reinvent .facet-box h5 .facet-toggle {
+  width: 40px;
+  text-align: right;
+}
+#aws-reinvent .facet-box h5 .facet-toggle span {
+  color: #999;
+}
+#aws-reinvent .facet-box .facet-items-container {
+  padding-bottom: 10px;
+  /*max-height: 200px;
+  overflow: auto;*/
+}
+#aws-reinvent .facet-box .facet-items-container.hiddenfacet {
+  display: none;
+}
+#aws-reinvent .facet-box ul {
+  margin-bottom: 0;
+}
+#aws-reinvent .facet-box li {
+  color: #666;
+}
+#aws-reinvent .facet-box li label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+#aws-reinvent .facet-box li label .facet-bucket-count {
+  margin-left: 5px;
+}
+#aws-reinvent .facet-box li .label {
+  color: #666;
+  background: #ddd;
+  font-weight: normal;
+  font-size: 13px;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+#aws-reinvent .facet-box li:hover {
+  color: #000;
+}
+#aws-reinvent .facet-box li:hover .label {
+  background: #ccc;
+}
+#aws-reinvent .opportunity-pagination-top {
+  margin-top: 0;
+}
+#aws-reinvent .opportunity-pagination-bottom {
+  margin-bottom: 0;
+}
+#aws-reinvent .filter-summary-items {
+  margin: 0 0 20px 0;
+}
+#aws-reinvent .filter-summary-items .filter-summary-item {
+  display: inline-block;
+  border: 1px solid #ddd;
+  font-weight: 600;
+  border-radius: 3px;
+  padding: 5px 8px;
+  color: #333;
+  margin: 0 10px 10px 0;
+}
+#aws-reinvent .filter-summary-items .filter-summary-item:hover {
+  cursor: pointer;
+  background: #eee;
+}
+#aws-reinvent .filter-summary-items .filter-summary-item:hover .glyphicon {
+  color: #777;
+}
+#aws-reinvent .filter-summary-items .filter-summary-item .glyphicon {
+  line-height: 14px;
+  color: #bbb;
+}
+#aws-reinvent .search-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+#aws-reinvent .search-top .search-top-item.search-summary {
+  flex: 1;
+}
+#aws-reinvent .search-top .search-top-item.search-view-mode-buttons {
+  width: 30%;
+}
+#aws-reinvent .search-top .search-top-item.search-view-mode-buttons .btn-group .btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+#aws-reinvent .search-top .search-top-item.search-view-mode-buttons .btn-group .active span.glyphicon {
+  color: #000;
+}
+#aws-reinvent a.stretched-link:hover {
+  text-decoration: none;
+}
+#aws-reinvent a.stretched-link::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  pointer-events: auto;
+  content: "";
+  background-color: rgba(0, 0, 0, 0);
+}
+@media (min-width: 768px) {
+  
+}
+#aws-reinvent .opportunities-wide {
+  border-top: 1px solid #ccc;
+  /* end .opportunity-wide */
+}
+#aws-reinvent .opportunities-wide .opportunity-wide {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  padding: 25px 0;
+  border-bottom: 1px solid #ccc;
+}
+#aws-reinvent .opportunities-wide .opportunity-wide .opportunity-information {
+  margin-left: 0;
+  margin-top: 15px;
+  flex: 1;
+}
+@media (min-width: 768px) {
+  #aws-reinvent .opportunities-wide .opportunity-wide .opportunity-information {
+    margin-left: 15px;
+    margin-top: 0;
+  }
+}
+#aws-reinvent .opportunities-wide .opportunity-wide .opportunity-information .opportunity-top {
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+#aws-reinvent .opportunities-wide .opportunity-wide .opportunity-information .opportunity-top .opportunity-title-location {
+  flex: 1;
+}
+#aws-reinvent .opportunities-wide .opportunity-wide .opportunity-information .opportunity-top .opportunity-title-location .opportunity-location {
+  font-size: 16px;
+  color: #666;
+  margin-top: 5px;
+}
+#aws-reinvent .opportunities-wide .opportunity-wide .opportunity-information .opportunity-top .opportunity-title-location .opportunity-location span {
+  color: #666;
+}
+#aws-reinvent .opportunities-wide .opportunity-wide .opportunity-information .opportunity-top .opportunity-title-location .opportunity-title,
+#aws-reinvent .opportunities-wide .opportunity-wide .opportunity-information .opportunity-top .opportunity-title-location .opportunity-title a {
+  font-size: 28px;
+  font-weight: 300;
+  color: #333;
+}
+#aws-reinvent .opportunities-wide .opportunity-wide .opportunity-information .opportunity-top .opportunity-title-location .opportunity-title a:hover {
+  text-decoration: none;
+}
+#aws-reinvent .opportunities-wide .opportunity-wide .opportunity-information .opportunity-top .opportunity-favorite {
+  width: 40px;
+  text-align: right;
+  font-size: 26px;
+}
+#aws-reinvent .opportunities-wide .opportunity-wide .opportunity-information .opportunity-top .opportunity-favorite .bi-heart-fill {
+  color: #b30000;
+}
+#aws-reinvent .opportunities-wide .opportunity-wide .opportunity-information .opportunity-top .opportunity-favorite .bi-heart-fill:hover {
+  cursor: pointer;
+  color: #930000;
+}
+#aws-reinvent .opportunities-wide .opportunity-wide .opportunity-information .opportunity-top .opportunity-favorite .bi-heart {
+  color: #333;
+}
+#aws-reinvent .opportunities-wide .opportunity-wide .opportunity-information .opportunity-top .opportunity-favorite .bi-heart:hover {
+  cursor: pointer;
+  color: #b30000;
+}
+span.bi-info-circle-fill:hover {
+  cursor: pointer;
+  color: #00f;
+}
+span.bi-download:hover {
+  cursor: pointer;
+  color: #393;
+}
+#aws-reinvent .opportunities-wide .opportunity-wide .opportunity-information .opportunity-main {
+  font-size: 14px;
+  color: #777;
+}
+#aws-reinvent .linkout {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
