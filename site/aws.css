@@ -279,9 +279,11 @@ button {
 }
 #aws-reinvent .search-top .search-top-item.search-summary {
   flex: 1;
+  line-height: 2.5em;
 }
 #aws-reinvent .search-top .search-top-item.search-view-mode-buttons {
   width: 30%;
+  text-align: right;
 }
 #aws-reinvent .search-top .search-top-item.search-view-mode-buttons .btn-group .btn:focus {
   outline: none;
@@ -376,6 +378,7 @@ button {
   cursor: pointer;
   color: #b30000;
 }
+/*
 span.bi-info-circle-fill:hover {
   cursor: pointer;
   color: #00f;
@@ -384,6 +387,7 @@ span.bi-download:hover {
   cursor: pointer;
   color: #393;
 }
+*/
 #aws-reinvent .opportunities-wide .opportunity-wide .opportunity-information .opportunity-main {
   font-size: 14px;
   color: #777;

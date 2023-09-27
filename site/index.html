@@ -22,6 +22,9 @@
     <script src="https://cdn.jsdelivr.net/npm/itemsjs@1.0.49/dist/itemsjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
+    <script src="https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js"></script>
+
     <title>AWS re:Invent 2023</title>
   </head>
   <body>
@@ -166,7 +169,6 @@
 
             <div id="main-items">
 
-
               <div id="opportunity-facets-mobile-button">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#opportunity-facets-mobile">
                   Filter
@@ -175,15 +177,41 @@
 
               <div class="search-top">
 
-                <h4 class="search-top-item search-summary" v-if="searchResult">AWS re:Invent 2023: Showing {{ showingStart }}-{{ showingEnd }} of {{ searchResult.pagination.total }} matching <span v-if="searchResult.pagination.total == 1" style="color: #333;">session</span><span v-else style="color: #333;">sessions</span></h4>
-                <span class="bi bi-download" @click="downloadFavoritesCSV"></span>&nbsp;
-                <span class="bi bi-info-circle-fill" data-bs-toggle="popover" title="Information" v-bind:data-bs-content="information"></span>
+                
+                <h4 class="search-top-item search-summary" v-if="searchResult">
+                  <template v-if="viewMode == 'wide'">
+                    AWS re:Invent 2023: Showing {{ showingStart }}-{{ showingEnd }} of {{ searchResult.pagination.total }} matching
+                    <span v-if="searchResult.pagination.total == 1" style="color: #333;">session</span>
+                    <span v-else style="color: #333;">sessions</span>
+                  </template>
+                  <template v-if="viewMode == 'grid'">
+                    AWS re:Invent 2023: Calendar of Favorites
+                  </template>
+                </h4>
+
+                <div class="search-top-item search-view-mode-buttons text-right">
+                  <div class="btn-group" role="group" aria-label="meta">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="popover" title="Information" v-bind:data-bs-content="information" aria-label="Info"><span class="bi bi-info-circle-fill" aria-hidden="true"></span></button>
+                    <button type="button" class="btn btn-outline-secondary" @click="downloadFavoritesCSV" aria-label="Download CSV of Favorites"><span class="bi bi-download" aria-hidden="true"></span></button>
+                  </div>
+                  
+                  <div class="btn-group" role="group" aria-label="view mode">
+                    <button type="button" v-bind:class="{ active: viewMode == 'wide' }" class="btn btn-outline-secondary" @click="setViewModeWide()" aria-label="Wide View"><span class="bi bi-list" aria-hidden="true"></span></button>
+                    <button type="button" v-bind:class="{ active: viewMode == 'grid' }" class="btn btn-outline-secondary" @click="setViewModeGrid()" aria-label="Grid View"><span class="bi bi-layout-three-columns" aria-hidden="true"></span></button>
+                  </div>
+                </div>
 
               </div>
 
+              <template v-if="viewMode == 'wide'">
               <div v-if="filterSummary" class="filter-summary-items">
                 <span v-for="f of filterSummary" :key="f.id" class="filter-summary-item" @click="removeFilter(f.val, f.name)">{{ f.summary }} <i class="bi bi-remove"></i></span>
               </div>
+              </template>
+
+                <div id="calendar-container">
+                  <div id="calendar"></div>
+                </div>
 
               <div class="opportunities-wide" v-if="viewMode=='wide' && searchResult">
 
@@ -196,7 +224,7 @@
 
                         <div class="opportunity-title-location">
                           <div class="opportunity-title">
-                            <span v-html="item.title"></span>
+                            <span v-html="item.wide_title"></span>
 
                             
                           </div>
@@ -205,14 +233,20 @@
                             <div v-if="item.locationName != ''">
                               <span class="badge bg-secondary" style="color: #fff; font-size: 14px;">{{ item.thirdPartyID }}: {{ item.trackName }}</span>
                               <i class="bi bi-geo-alt-fill"></i>
-                              {{ item.locationName }}
-                              {{ item.venueName }}
+                              {{ item.venueName }} -
+                              {{ item.locationName }}                              
                             </div>
                             <div v-else>
                               <span class="badge bg-secondary" style="color: #fff; font-size: 14px;">{{ item.thirdPartyID }}: {{ item.trackName }}</span>
                               <i class="bi bi-geo-alt-fill"></i>
                               TBD
                             </div>
+                          </div>
+
+                          <div>
+                            <span v-if="item.day != ''">{{ item.day }}</item></span>
+                            <span v-if="item.startDateTime != ''">{{ item.start }}</span>
+                            <span v-if="item.endDateTime != ''">- {{ item.end }}</span>
                           </div>
 
                           <div>
@@ -275,25 +309,25 @@
                   </div>
                 </div>
 
-              </div>
+                <div class="pagination-container text-right">
+                  <paginate
+                        :page-count="Math.ceil(searchResult.pagination.total / searchResult.pagination.per_page)"
+                        :click-handler="goToPage"
+                        :prev-text="'Prev'"
+                        :next-text="'Next'"
+                        :container-class="'pagination'"
+                        :page-class="'page-item'"
+                        :page-link-class="'page-link'"
+                        :prev-class="'page-item'"
+                        :prev-link-class="'page-link'"
+                        :next-class="'page-item'"
+                        :next-link-class="'page-link'"
+                        class="opportunity-pagination-bottom"
+                        v-model="page"
+                        v-if="searchResult">
+                  </paginate>
+                </div>
 
-              <div class="pagination-container text-right">
-                <paginate
-                      :page-count="Math.ceil(searchResult.pagination.total / searchResult.pagination.per_page)"
-                      :click-handler="goToPage"
-                      :prev-text="'Prev'"
-                      :next-text="'Next'"
-                      :container-class="'pagination'"
-                      :page-class="'page-item'"
-                      :page-link-class="'page-link'"
-                      :prev-class="'page-item'"
-                      :prev-link-class="'page-link'"
-                      :next-class="'page-item'"
-                      :next-link-class="'page-link'"
-                      class="opportunity-pagination-bottom"
-                      v-model="page"
-                      v-if="searchResult">
-                </paginate>
               </div>
 
             </div>
@@ -308,7 +342,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="aws.js"></script>
+    <script src="aws-cal.js"></script>
 
   </body>
 </html>
