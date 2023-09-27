@@ -14,6 +14,7 @@ Features:
 * Responsive design / mobile
 
 ![screenshot](https://github.com/amwhalen/aws-reinvent-2023-sessions/blob/main/screenshot.png?raw=true)
+![screenshot2](https://github.com/amwhalen/aws-reinvent-2023-sessions/blob/main/screenshot2.png?raw=true)
 
 
 # AWS Session Data
