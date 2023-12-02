@@ -84,7 +84,7 @@ function timeConverter(UNIX_timestamp) {
   return dt;
 }
 
-function startTimeConverter(UNIX_timestamp) {
+function startTimeConverter(UNIX_timestamp, with_minutes=false) {
   var three_hours = 3 * 60 * 60;
   var a = new Date((UNIX_timestamp-three_hours) * 1000);
   var hour = a.getHours();
@@ -92,9 +92,15 @@ function startTimeConverter(UNIX_timestamp) {
 
   var h = (hour > 12) ? (hour-12) : hour;
   var h = (h == 0) ? 12 : h;
+  
   var suffix = (hour >= 12) ? 'pm' : 'am';
   
-  var dt = h + suffix;
+  var dt;
+  if (with_minutes) {
+    dt = h + ':' + min + suffix;
+  } else {
+    dt = h + suffix;
+  }
   
   // Desired output: 1pm
   return dt;
@@ -119,10 +125,13 @@ var vm = new Vue({
     var per_page = this.per_page || 30;
     var rows = this.rows || null;
     var db = this.db || null;
+    var events_without_times = this.events_without_times || [];
+    var events_without_times_info = this.events_without_times_info || null;
     var isLoaded = this.isLoaded || false;
     var viewMode = this.viewMode || 'wide';
     var lastChanged = this.lastChanged || Date.now();
     var generated_datetime = this.generated_datetime || null;
+    var popover_list = this.popover_list || [];
     var information = this.information || null;
     var calendar = this.calendar || null;
     var hiddenFacets = this.hiddenFacets || [];
@@ -134,7 +143,10 @@ var vm = new Vue({
       page: page,
       per_page: per_page,
       generated_datetime: generated_datetime,
+      events_without_times: events_without_times,
+      events_without_times_info: events_without_times_info,
       information: information,
+      popover_list: popover_list,
       rows: rows,
       db: db,
       isLoaded: isLoaded,
@@ -172,7 +184,8 @@ var vm = new Vue({
         v.information += ' AWS session data last refreshed on ' + v.generated_datetime + ' UTC.';
         v.information += ' More info at https://github.com/amwhalen/aws-reinvent-2023-sessions.';
 
-        
+        v.events_without_times_info = '';
+
         v.rows.map(function(row) {
           
           // pull in any favorites stored in local storage
@@ -186,6 +199,10 @@ var vm = new Vue({
             row.start = timeConverter(row.startDateTime);
             row.startTimeNice = startTimeConverter(row.startDateTime);
             row.endTimeNice = startTimeConverter(row.endDateTime);
+            row.startTimeNiceWithMinutes = startTimeConverter(row.startDateTime, true);
+            row.endTimeNiceWithMinutes = startTimeConverter(row.endDateTime, true);
+          } else {
+            row.startTimeNice = 'TBD';
           }
           if (row.endDateTime != '') {
             row.end = timeConverter(row.endDateTime);
@@ -193,7 +210,7 @@ var vm = new Vue({
           if ('aws_tag_day' in row && row.aws_tag_day.length > 0) {
             row.day = row.aws_tag_day.join(', ');
           } else {
-            row.day = '';
+            row.day = 'TBD';
           }
           row.wide_title = row.title;
           
@@ -203,7 +220,7 @@ var vm = new Vue({
           } else {
             venueInitials = 'TBD';
           }
-          row.title = venueInitials + ': ' + row.title;
+          row.title = row.thirdPartyID + ' @ ' + venueInitials + ': ' + row.title;
           
           // set event background color based on location:
           var venueColors = {
@@ -214,9 +231,12 @@ var vm = new Vue({
             'Venetian': '#7f1a8c',
           };
           if (row.venueName != '' && row.venueName in venueColors) {
-            row.backgroundColor = venueColors[row.venueName]; 
+            row.backgroundColor = venueColors[row.venueName];
+            row.color = venueColors[row.venueName];
           } else {
             row.backgroundColor = '#666666';
+            row.color = '#666666';
+            row.venueName = 'TBD';
           }
           
           return row;
@@ -241,6 +261,15 @@ var vm = new Vue({
       });
 
   },
+  updated() {
+    console.log('vue updated');
+    
+    // Enable bootstrap popovers
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+      return new bootstrap.Popover(popoverTriggerEl);
+    });
+  },
   methods: {
     setViewModeGrid: function() {
       
@@ -256,7 +285,20 @@ var vm = new Vue({
           'my_favorites': ['Yes']
         }
       });
-        
+
+      // find events without a start date since they won't show in the calendar
+      v.events_without_times = [];
+      v.events_without_times_info = '';
+      cal_events.data.items.map(function(e) {
+        if (!('start' in e)) {
+          v.events_without_times.push(e);
+          v.events_without_times_info += '<li>'+e.title+'</li>';
+        }
+      });
+      if (v.events_without_times.length > 0) {
+        v.events_without_times_info = '<ul>' + v.events_without_times_info + '</ul>';
+      }
+
       // calendar view
       var calendarEl = document.getElementById('calendar');
       //console.log('calendarEl', document.getElementById('calendar'));
@@ -290,11 +332,13 @@ var vm = new Vue({
         },
         eventDidMount: function(info) {
           // popover on click of an event
+          //console.log('extendedProps for popover', info.event.extendedProps);
           $(info.el).popover({
             'title': info.event.extendedProps.wide_title,
-            'content': '<strong>' + info.event.extendedProps.startTimeNice + ' @ '+info.event.extendedProps.venueName+'</strong><p>'+info.event.extendedProps.description+'</p>',
+            'content': '<span class="badge bg-secondary" style="color: #fff;">' + info.event.extendedProps.thirdPartyID + ': ' + info.event.extendedProps.trackName + '</span><br><strong>' + info.event.extendedProps.startTimeNice + ' @ '+info.event.extendedProps.venueName+'</strong><p>'+info.event.extendedProps.description+'</p>',
             'html': true,
             'placement': 'top',
+            'trigger': 'hover',
           });
         },
         // events: [
@@ -306,12 +350,6 @@ var vm = new Vue({
         // ]
       });
       v.calendar.render();
-
-      // Enable bootstrap popovers
-      var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-      var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-        return new bootstrap.Popover(popoverTriggerEl)
-      });
       
     },
     setViewModeWide: function() {
@@ -327,8 +365,6 @@ var vm = new Vue({
       var innerDiv = document.createElement('div');
       innerDiv.setAttribute('id', 'calendar');
       document.getElementById('calendar-container').appendChild(innerDiv);
-      
-      //console.log('calendar recreated', document.getElementById('calendar'));
     },
     // Clear all search filters.
     reset: function () {
@@ -616,10 +652,4 @@ var vm = new Vue({
       this.updateQueryString();
     },
   }
-});
-
-// Enable bootstrap popovers
-var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-  return new bootstrap.Popover(popoverTriggerEl)
 });

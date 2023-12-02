@@ -27,6 +27,8 @@ To solve this issue, a lambda function is triggered (by EventBridge schedule) ev
 
 # Tech Stack
 
+![diagram](https://github.com/amwhalen/aws-reinvent-2023-sessions/blob/main/diagram.png?raw=true)
+
 Technologies used in this repository include:
 * AWS S3
 * AWS Lambda / Python

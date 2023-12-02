@@ -95,7 +95,7 @@ resource "aws_s3_bucket_policy" "website_bucket" {
 # Lambda, IAM role, etc.
 #
 
-# allows a lambda function to assume this role
+# allows a lambda function to assume this role (trust relationship)
 data "aws_iam_policy_document" "lambda_assume_role_policy" {
   statement {
     effect  = "Allow"

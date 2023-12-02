@@ -191,7 +191,7 @@
 
                 <div class="search-top-item search-view-mode-buttons text-right">
                   <div class="btn-group" role="group" aria-label="meta">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="popover" title="Information" v-bind:data-bs-content="information" aria-label="Info"><span class="bi bi-info-circle-fill" aria-hidden="true"></span></button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="popover" data-bs-trigger="focus" title="Information" v-bind:data-bs-content="information" aria-label="Info"><span class="bi bi-info-circle-fill" aria-hidden="true"></span></button>
                     <button type="button" class="btn btn-outline-secondary" @click="downloadFavoritesCSV" aria-label="Download CSV of Favorites"><span class="bi bi-download" aria-hidden="true"></span></button>
                   </div>
                   
@@ -204,14 +204,22 @@
               </div>
 
               <template v-if="viewMode == 'wide'">
-              <div v-if="filterSummary" class="filter-summary-items">
-                <span v-for="f of filterSummary" :key="f.id" class="filter-summary-item" @click="removeFilter(f.val, f.name)">{{ f.summary }} <i class="bi bi-remove"></i></span>
-              </div>
+                <div v-if="filterSummary" class="filter-summary-items">
+                  <span v-for="f of filterSummary" :key="f.id" class="filter-summary-item" @click="removeFilter(f.val, f.name)">{{ f.summary }} <i class="bi bi-remove"></i></span>
+                </div>
               </template>
 
-                <div id="calendar-container">
-                  <div id="calendar"></div>
-                </div>
+              <div class="calendar-favorites-top" v-if="viewMode == 'grid' && events_without_times.length > 0">
+                  There <template v-if="events_without_times.length == 1">is</template><template v-else>are</template>
+                  {{ events_without_times.length }}
+                  favorite session<template v-if="events_without_times.length != 1">s</template> not shown in the calendar.
+                  Some sessions do not have start times yet.
+                  <span class="bi bi-info-circle-fill" ref="events_without_times_info" data-bs-toggle="popover" data-bs-trigger="hover" title="Sessions Without Times" data-bs-html="true" v-bind:data-bs-content="events_without_times_info" aria-label="Info"></span>
+              </div>
+
+              <div id="calendar-container">
+                <div id="calendar"></div>
+              </div>
 
               <div class="opportunities-wide" v-if="viewMode=='wide' && searchResult">
 
@@ -230,23 +238,21 @@
                           </div>
 
                           <div class="opportunity-location">
-                            <div v-if="item.locationName != ''">
-                              <span class="badge bg-secondary" style="color: #fff; font-size: 14px;">{{ item.thirdPartyID }}: {{ item.trackName }}</span>
+                            <span class="badge bg-secondary" style="color: #fff; font-size: 14px;">{{ item.thirdPartyID }}: {{ item.trackName }}</span>
+                            <template v-if="item.locationName != ''">
                               <i class="bi bi-geo-alt-fill"></i>
                               {{ item.venueName }} -
                               {{ item.locationName }}                              
-                            </div>
-                            <div v-else>
-                              <span class="badge bg-secondary" style="color: #fff; font-size: 14px;">{{ item.thirdPartyID }}: {{ item.trackName }}</span>
+                            </template>
+                            <template v-else>
                               <i class="bi bi-geo-alt-fill"></i>
                               TBD
-                            </div>
-                          </div>
-
-                          <div>
+                            </template>
+                            &nbsp;
+                            <i class="bi bi-clock-fill"></i>
                             <span v-if="item.day != ''">{{ item.day }}</item></span>
-                            <span v-if="item.startDateTime != ''">{{ item.start }}</span>
-                            <span v-if="item.endDateTime != ''">- {{ item.end }}</span>
+                            <span v-if="item.startDateTime != ''">{{ item.startTimeNiceWithMinutes }}</span>
+                            <span v-if="item.endDateTime != ''">- {{ item.endTimeNiceWithMinutes }}</span>
                           </div>
 
                           <div>
@@ -342,7 +348,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="aws-cal.js"></script>
+    <script src="aws.js"></script>
 
   </body>
 </html>

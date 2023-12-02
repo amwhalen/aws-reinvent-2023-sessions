@@ -1,0 +1,24 @@
+
+/* ICONS: https://icons.getbootstrap.com/ */
+
+.opportunity-title a {
+    text-decoration: none;
+}
+.pagination-container {
+    margin-top: 30px;
+}
+
+.bi-check-circle-fill {
+    font-size: 24px;
+    color: green;
+    float: right;
+}
+
+#aws-reinvent #opportunity-facets {
+    display: none;
+}
+@media (min-width: 992px) {
+    #aws-reinvent #opportunity-facets {
+        display: block;
+    }
+}
